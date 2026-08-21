@@ -4,7 +4,7 @@
 const SUBSCRIBE_ENDPOINT = "/api/subscribe";
 
 function renderMessage(element, text) {
-  element.innerHTML = text;
+  element.innerHTML = escapeHtml(text);
 }
 
 function isValidEmail(email) {

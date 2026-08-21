@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const items = loadCart();
     checkout(items, code).then(function (response) {
       document.getElementById("cart-status").textContent =
-        "Order placed. Total: $" + calculateTotal(items, code);
+        "Order placed. Total: " + formatPrice(calculateTotal(items, code));
     });
   });
 });
