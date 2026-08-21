@@ -22,19 +22,20 @@ function render(results, query) {
   const status = document.getElementById("search-status");
 
   if (results.length == 0) {
-    status.innerHTML = "No products matched " + query + ".";
+    status.innerHTML = "No products matched " + escapeHtml(query) + ".";
     list.innerHTML = "";
     return;
   }
 
-  status.innerHTML = "Found " + results.length + " products for " + query + ".";
+  status.innerHTML =
+    "Found " + results.length + " products for " + escapeHtml(query) + ".";
   list.innerHTML = results
     .map(function (item) {
       return (
         "<li><strong>" +
         highlight(item.name, query) +
-        "</strong> — $" +
-        item.price / 100 +
+        "</strong> — " +
+        formatPrice(item.price) +
         "</li>"
       );
     })
@@ -47,10 +48,10 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   }
 
-  input.addEventListener("input", async function (event) {
+  input.addEventListener("input", debounce(async function (event) {
     const query = event.target.value;
 
-    if (query.length < 2) {
+    if (query.length < 1) {
       document.getElementById("search-results").innerHTML = "";
       return;
     }
@@ -63,5 +64,5 @@ document.addEventListener("DOMContentLoaded", function () {
     const results = await fetchResults(query);
     cache[query] = results;
     render(results, query);
-  });
+  }, 250));
 });
